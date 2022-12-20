@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  odoo11:
+    image: odoo:test
+    container_name: odoodev11
+    ports:
+      - 3000:8069
+      - 3001:8072
+    restart: always
+    volumes:
+      - ./config:/etc/odoo
+    #environtment:
+    #  USER: 'benedetta@odoodbdev'
+    #  PASSWORD: 'onionring123!'
+    #  HOST: 'odoodbdev.postgres.database.azure.com'
+    #  PORT: '5432'
+  #odoo-custom:
+  #  image: odoodev:11
+  #  container_name: odoo-custom
+  #  ports:
+  #    - 3002:8069
+  #    - 3003:8072
+  #  restart: always
+
