@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-hotel
+  namespace: development
+  labels:
+    app: odoo-hotel
+    env: development
+spec:
+  selector:
+    matchLabels:
+      app: odoo-hotel
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: odoo-hotel
+    spec:
+      containers:
+      - name: odoo-hotel
+        image: odoocontainer.azurecr.io/odoo:11
+        volumeMounts:
+          - mountPath: "/etc/odoo"
+            name: secret-odoo-conf
+            readOnly: true
+          - name: azurefileshare
+            mountPath: /mnt/extra-addons/custom
+        ports:
+        - containerPort: 8069
+          name: http-port
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250M
+          requests:
+            cpu: 150m
+            memory: 150M
+        readinessProbe:
+          tcpSocket:
+            port: 8069
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          tcpSocket:
+            port: 8069
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      volumes:
+        - name: secret-odoo-conf
+          secret:
+            secretName: secret-odoo-conf
+        - name: azurefileshare
+          azureFile:
+            secretName: storage-secret
+            shareName: custom
+            readOnly: false
