@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install Ingress
-helm install nginx-ingress ingress-ngin/ingress-nginx \ 
+helm install nginx-ingress ingress-nginx/ingress-nginx \ 
   --namespace development --set controller.replicaCount=1 \
   --set controller.nodeSelector."kubernetes\.io/os"=linux \
   --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
