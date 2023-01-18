@@ -6,6 +6,7 @@ SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
 # Generate locale C.UTF-8 for postgres and general locale data
 ENV LANG C.UTF-8
+ENV TZ="Asia/Jakarta"
 
 #Add Repo Python
 #RUN apt-get update && apt-get install software-properties-common -y
@@ -14,6 +15,7 @@ ENV LANG C.UTF-8
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        build-essentials \
         ca-certificates \
         curl \
         dirmngr \
@@ -22,7 +24,7 @@ RUN apt-get update && \
         libssl-dev \
         node-less \
         npm \
-	git \
+	    git \
         python3-num2words \
         python3-pdfminer \
         python3-pip \
@@ -42,7 +44,21 @@ RUN apt-get update && \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
+RUN git config --global --add safe.directory /mnt/extra-addons/
 RUN pip3 install psycopg2-binary
+RUN pip3 install cryptography cachetools cerberus pyquerystring parse-accept-language jsondiff xlsxwriter xlrd fdfgen xlwt openpyxl \
+        imgkit \
+        newrelic \
+        pyjwt \
+        simplejson \
+        requests_mock \
+        netifaces \
+        pandas \
+        geopy \
+        python-redis-rate-limit \
+        paramiko \
+        xmltodict \
+        ldap3
 
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
