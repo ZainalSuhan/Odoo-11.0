@@ -48,8 +48,10 @@ RUN apt-get update && \
 
 RUN git config --global --add safe.directory /mnt/extra-addons/
 RUN pip3 install psycopg2-binary
+COPY ./config/requirements.txt .
+RUN pip3 install -r requirements.txt
 RUN pip3 install cryptography
-RUN pip3 install cryptography cachetools cerberus pyquerystring parse-accept-language jsondiff xlsxwriter xlrd fdfgen xlwt openpyxl \
+# RUN pip3 install cryptography cachetools cerberus pyquerystring parse-accept-language jsondiff xlsxwriter xlrd fdfgen xlwt openpyxl \
         imgkit \
         newrelic \
         pyjwt \
