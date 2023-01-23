@@ -1,5 +1,6 @@
 #FROM debian:buster-slim
-FROM python:3.6.9-slim-buster
+#FROM python:3.6.9-slim-buster
+FROM python:3.7.16-slim-buster
 MAINTAINER Odoo S.A. <info@odoo.com>
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
@@ -7,6 +8,7 @@ SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 # Generate locale C.UTF-8 for postgres and general locale data
 ENV LANG C.UTF-8
 ENV TZ="Asia/Jakarta"
+ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
 
 #Add Repo Python
 #RUN apt-get update && apt-get install software-properties-common -y
@@ -46,6 +48,7 @@ RUN apt-get update && \
 
 RUN git config --global --add safe.directory /mnt/extra-addons/
 RUN pip3 install psycopg2-binary
+RUN pip3 install cryptography
 RUN pip3 install cryptography cachetools cerberus pyquerystring parse-accept-language jsondiff xlsxwriter xlrd fdfgen xlwt openpyxl \
         imgkit \
         newrelic \
